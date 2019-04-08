@@ -56,8 +56,8 @@ shutil.copytree(datasets, stft, ignore=ig_f)
 def get_stft(fileName,targetFileName=None):
     if targetFileName is None:
         targetFileName=re.sub('.wav','.pkl',re.sub('datasets','stft',fileName))
-    print ("Processing filename"+str(fileName)+" to "+str(targetFileName))
     if not os.path.isfile(targetFileName):
+        print ("Processing filename"+str(fileName)+" to "+str(targetFileName))
         myAudio = fileName
         samplingFreq, mySound = wavfile.read(myAudio)
         mySound = mySound / (2.**15)
@@ -66,6 +66,7 @@ def get_stft(fileName,targetFileName=None):
             pickle.dump(signal_stft,f)
         return signal_stft
     else:
+        print ("Already exists: "+str(targetFileName))
         return 0
 
 
@@ -103,10 +104,18 @@ for each_file in list_of_files:
         print (str(e))
     counter=counter+1
 
-list_of_users=[os.listdir('./datasets/single_speaker/')]
+list_of_users=os.listdir('./datasets/single_speaker/') # the os.listdir gives a list
 list_of_model_dirs=['./models/s'+x for x in list_of_users]
 
 try:
-    os.mkdir('./models')
+    if os.path.isdir('./models'):
+        pass
+    else:
+        os.mkdir('./models')
     for each_directory in list_of_model_dirs:
-        os.mkdir(each_directory)
+        if os.path.isdir(each_directory):
+            pass
+        else:
+            os.mkdir(each_directory)
+except:
+    pass
