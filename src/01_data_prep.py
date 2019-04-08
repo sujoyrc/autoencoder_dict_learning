@@ -102,3 +102,11 @@ for each_file in list_of_files:
     except Exception as e:
         print (str(e))
     counter=counter+1
+
+list_of_users=[os.listdir('./datasets/single_speaker/')]
+list_of_model_dirs=['./models/s'+x for x in list_of_users]
+
+try:
+    os.mkdir('./models')
+    for each_directory in list_of_model_dirs:
+        os.mkdir(each_directory)
